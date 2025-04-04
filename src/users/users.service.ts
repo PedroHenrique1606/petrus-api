@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import { MailService } from 'src/mail/mail.service';
+import { error } from 'console';
 
 @Injectable()
 export class UsersService {
@@ -13,49 +14,79 @@ export class UsersService {
   ) { }
 
   async create(dto: CreateUserDto) {
-    const existing = await this.repo.findOne({
-      where: { email: dto.email }
-    })
+    const existing = await this.repo.findOne({ where: { email: dto.email } });
 
     if (existing) {
-      throw new Error('Email já cadastrado')
+      throw new BadRequestException('E-mail já cadastrado');
     }
-    
+
     const hashed = await bcrypt.hash(dto.password, 10);
     const user = this.repo.create({ ...dto, password: hashed });
     const savedUser = await this.repo.save(user);
-    // Enviar e-mail de boas-vindas
+
     await this.mailService.sendWelcomeEmail(savedUser.email, savedUser.name);
 
     return { message: 'Usuário criado com sucesso!' };
   }
 
   async findAll() {
-    return this.repo.find({ select: ['id', 'name', 'email', 'role', 'createdAt'] });
+    return this.repo.find({ select: ['id', 'name', 'bio', 'email', 'role', 'createdAt'] });
   }
 
   async findById(id: string) {
     const user = await this.repo.findOne({ where: { id } });
     if (!user) throw new NotFoundException('Usuário não encontrado');
-    return user;
+
+    const { password, ...safeUser } = user;
+    return safeUser;
   }
 
   async findByEmail(email: string) {
     return this.repo.findOne({ where: { email } });
   }
-
   async update(id: string, dto: Partial<CreateUserDto>) {
     const user = await this.findById(id);
     if (dto.password) dto.password = await bcrypt.hash(dto.password, 10);
     Object.assign(user, dto);
-    return this.repo.save(user);
+    const updated = await this.repo.save(user);
+
+    const { password, ...safe } = updated;
+    return safe;
   }
 
   async remove(id: string, requestingUser: any) {
-    const user = await this.findById(id);
+    const user = await this.repo.findOne({ where: { id } });
+
+    if (!user) throw new NotFoundException('Usuário não encontrado');
+
     if (requestingUser.role !== 'usuario' || requestingUser.userId !== id) {
       throw new ForbiddenException('Somente usuários podem se deletar');
     }
-    return this.repo.remove(user);
+
+    await this.repo.remove(user);
+
+    return { message: 'Usuário deletado com sucesso!' };
   }
+
+  async updatePassword(id: string, newPassword: string) {
+    const user = await this.repo.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado')
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10)
+    await this.repo.save(user)
+
+    return { message: 'Senha atualizada com sucesso!' };
+  }
+
+  async updatePasswordByEmail(email: string, newHashedPassword: string) {
+    const user = await this.repo.findOne({ where: { email } });
+    if (!user) throw new BadRequestException('Usuário não encontrado');
+
+    user.password = newHashedPassword;
+    await this.repo.save(user);
+  }
+
+  
 }

@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "auth controller refactored from login dto"
+        "auth controller refactored from login dto",
+        "create a redefined password type flows and ajustment swagger descriptions"
     ]
 }
