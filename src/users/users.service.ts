@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
@@ -29,8 +29,30 @@ export class UsersService {
     return { message: 'Usuário criado com sucesso!' };
   }
 
-  async findAll() {
-    return this.repo.find({ select: ['id', 'name', 'bio', 'email', 'role', 'createdAt'] });
+  async findAllPaginated(page = 1, limit = 10, q?: string) {
+    const skip = (page - 1) * limit;
+
+    const query = this.repo
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.name', 'user.bio', 'user.email', 'user.role', 'user.createdAt'])
+      .orderBy('user.createdAt', 'DESC')
+      .skip(skip)
+      .take(limit);
+
+    if (q) {
+      query.where('LOWER(user.name) LIKE LOWER(:q)', { q: `%${q}%` })
+        .orWhere('LOWER(user.email) LIKE LOWER(:q)', { q: `%${q}%` });
+    }
+
+    const [users, total] = await query.getManyAndCount();
+
+    return {
+      data: users,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findById(id: string) {
@@ -88,5 +110,5 @@ export class UsersService {
     await this.repo.save(user);
   }
 
-  
+
 }

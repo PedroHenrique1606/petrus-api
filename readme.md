@@ -90,9 +90,76 @@ Você pode testar as rotas usando ferramentas como [Insomnia](https://insomnia.r
 }
 ```
 
-### 🔹 Listar todos os usuários
+### 🔹 Listar usuários com paginação e busca
 
 `GET /users`
+
+**Query params:**
+
+| Parâmetro | Tipo   | Obrigatório | Descrição                                       |
+| --------- | ------ | ----------- | ----------------------------------------------- |
+| `page`    | number | Sim         | Número da página (ex: `1`)                      |
+| `limit`   | number | Não         | Quantidade de itens por página (ex: `10`)       |
+| `q`       | string | Não         | Termo de busca por nome ou e-mail (ex: `pedro`) |
+
+**Exemplo de requisição:**
+
+```bash
+GET /users?page=1&limit=10&q=pedro
+```
+
+**Resposta esperada:**
+
+```json
+{
+  "data": [
+    {
+      "id": "e1dea613-93cf-4eec-a6c8-668e0e79f495",
+      "name": "Pedro Henrique Melo hehe",
+      "email": "petrushenricus1606@mailto.plus",
+      "bio": "Católico",
+      "role": "apoiador",
+      "createdAt": "2025-04-04T17:21:34.000Z"
+    },
+    {
+      "id": "3df35228-5ca3-46fb-bfe1-b7399c1b5303",
+      "name": "Pedro Henrique Melo hehe",
+      "email": "petrushenricus1606",
+      "bio": "Católico",
+      "role": "apoiador",
+      "createdAt": "2025-04-04T17:20:57.000Z"
+    },
+    {
+      "id": "5e4fdc49-5f0e-4402-bbd7-32bd37b36956",
+      "name": "Pedro Henrique Melo",
+      "email": "petrushenricus@mailto.plus",
+      "bio": "Gosto de gatinhos",
+      "role": "usuario",
+      "createdAt": "2025-04-04T03:02:25.000Z"
+    },
+    {
+      "id": "b5586eff-4e80-496b-be95-505007f794b4",
+      "name": "Pedro Henrique Melo",
+      "email": "pedromelo.dev.contato@gmail.com",
+      "bio": "Gosto de gatinhos",
+      "role": "usuario",
+      "createdAt": "2025-04-04T02:54:22.000Z"
+    },
+    {
+      "id": "4858cd10-313f-4820-af6e-34f061f67da3",
+      "name": "Pedro Henrique",
+      "email": "pedro@email.com",
+      "bio": "Sou o primeiro usuário",
+      "role": "usuario",
+      "createdAt": "2025-04-04T02:47:02.000Z"
+    }
+  ],
+  "total": 5,
+  "page": 1,
+  "limit": 10,
+  "totalPages": 1
+}
+```
 
 ### 🔹 Buscar usuário por ID
 

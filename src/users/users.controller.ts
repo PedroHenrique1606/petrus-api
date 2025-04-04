@@ -9,8 +9,10 @@ import {
     UseGuards,
     Request,
     Patch,
+    Query,
+    Optional,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -50,9 +52,16 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @Get()
-    @ApiOperation({ summary: 'Endpoint para listar todos os usuários' })
-    findAll() {
-        return this.usersService.findAll();
+    @ApiOperation({ summary: 'Endpoint para listar usuários com paginação e busca' })
+    @ApiQuery({ name: 'page', required: true, example: 1, description: 'Número da página (opcional)' })
+    @ApiQuery({ name: 'limit', required: false, example: 10, description: 'Quantidade de itens por página (opcional)' })
+    @ApiQuery({ name: 'q', required: false, example: 'pedro', description: 'Termo de busca por nome ou e-mail (opcional)' })
+    findAll(
+        @Query('page') page = '1',
+        @Query('limit') limit = '10',
+        @Query('q') q?: string,
+    ) {
+        return this.usersService.findAllPaginated(+page, +limit, q);
     }
 
     @UseGuards(JwtAuthGuard)
