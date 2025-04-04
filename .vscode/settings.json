@@ -1,0 +1,5 @@
+{
+    "conventionalCommits.scopes": [
+        "auth controller refactored from login dto"
+    ]
+}
