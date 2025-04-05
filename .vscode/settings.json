@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "auth controller refactored from login dto",
         "create a redefined password type flows and ajustment swagger descriptions",
-        "refactored get from search and paginations"
+        "refactored get from search and paginations",
+        "included outputs from login with acess_token, id and name"
     ]
 }
