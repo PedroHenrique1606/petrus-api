@@ -51,6 +51,30 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
+    @Post('create-by-auth')
+    @ApiOperation({ summary: 'Criar novo usuário estando autenticado (exceto apoiadores)' })
+    @ApiBody({
+        type: CreateUserDto,
+        examples: {
+            default: {
+                summary: 'Exemplo de criação autenticada',
+                value: {
+                    name: 'Novo Usuário',
+                    email: 'novo@exemplo.com',
+                    phone: '(11) 99999-9999',
+                    bio: 'Novo membro do time',
+                    password: 'senhaSegura123',
+                    role: 'usuario',
+                },
+            },
+        },
+    })
+    createByAuth(@Body() dto: CreateUserDto, @Request() req) {
+        return this.usersService.createByAuthenticatedUser(dto, req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @Get()
     @ApiOperation({ summary: 'Endpoint para listar usuários com paginação e busca' })
     @ApiQuery({ name: 'page', required: true, example: 1, description: 'Número da página (opcional)' })

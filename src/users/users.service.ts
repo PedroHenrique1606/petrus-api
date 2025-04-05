@@ -92,7 +92,7 @@ export class UsersService {
 
     return { message: 'Usuário deletado com sucesso!' };
   }
-  
+
   async updatePassword(id: string, newPassword: string) {
     const user = await this.repo.findOne({ where: { id } });
     if (!user) {
@@ -112,4 +112,25 @@ export class UsersService {
     user.password = newHashedPassword;
     await this.repo.save(user);
   }
+
+  async createByAuthenticatedUser(dto: CreateUserDto, currentUser: any) {
+    if (currentUser.role === 'apoiador') {
+      throw new ForbiddenException('Apoiadores não têm permissão para criar novos usuários');
+    }
+
+    const existing = await this.repo.findOne({ where: { email: dto.email } });
+
+    if (existing) {
+      throw new BadRequestException('E-mail já cadastrado');
+    }
+
+    const hashed = await bcrypt.hash(dto.password, 10);
+    const user = this.repo.create({ ...dto, password: hashed });
+    const savedUser = await this.repo.save(user);
+
+    await this.mailService.sendWelcomeEmail(savedUser.email, savedUser.name);
+
+    return { message: 'Usuário criado com sucesso por usuário autenticado!' };
+  }
+
 }
