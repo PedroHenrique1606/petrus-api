@@ -75,21 +75,24 @@ export class UsersService {
     const { password, ...safe } = updated;
     return safe;
   }
-
   async remove(id: string, requestingUser: any) {
     const user = await this.repo.findOne({ where: { id } });
 
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    if (requestingUser.role !== 'usuario' || requestingUser.userId !== id) {
-      throw new ForbiddenException('Somente usuários podem se deletar');
+    if (requestingUser.role !== 'usuario') {
+      throw new ForbiddenException('Somente usuários podem deletar perfis');
+    }
+
+    if (requestingUser.userId === id) {
+      throw new ForbiddenException('Você não pode deletar a si mesmo');
     }
 
     await this.repo.remove(user);
 
     return { message: 'Usuário deletado com sucesso!' };
   }
-
+  
   async updatePassword(id: string, newPassword: string) {
     const user = await this.repo.findOne({ where: { id } });
     if (!user) {
@@ -109,6 +112,4 @@ export class UsersService {
     user.password = newHashedPassword;
     await this.repo.save(user);
   }
-
-
 }
