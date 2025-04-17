@@ -1,11 +1,11 @@
 # Petrus API - Backend
 
-API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiadores do sistema Petrus.
+API REST desenvolvida com **NestJS** e **Postgres** para gerenciar usuários/apoiadores do sistema Petrus.
 
 ## 📌 Tecnologias Utilizadas
 - [NestJS](https://nestjs.com/)
 - [TypeORM](https://typeorm.io/)
-- [MySQL](https://www.mysql.com/)
+- [Postgres](https://www.postgresql.org//)
 - [Swagger](https://swagger.io/)
 - [Docker (opcional para banco)](https://www.docker.com/)
 
@@ -13,7 +13,7 @@ API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiad
 
 ### 🔧 Pré-requisitos
 - Node.js v18+
-- MySQL instalado ou rodando via Docker
+- Postgres instalado ou rodando via Docker
 - **Opcional:** Docker para rodar o banco rapidamente.
 
 ### 📦 Instalação
