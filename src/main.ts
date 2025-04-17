@@ -14,8 +14,8 @@ async function bootstrap() {
   app.enableCors();
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Evoé API')
-    .setDescription('Documentação da API da Evoé')
+    .setTitle('Petrus API')
+    .setDescription('Documentação da API da Petrus')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

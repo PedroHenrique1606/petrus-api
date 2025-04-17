@@ -1,6 +1,6 @@
-# Evoé API - Backend
+# Petrus API - Backend
 
-API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiadores do sistema Evoé.
+API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiadores do sistema Petrus.
 
 ## 📌 Tecnologias Utilizadas
 - [NestJS](https://nestjs.com/)
@@ -19,8 +19,8 @@ API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiad
 ### 📦 Instalação
 1. Clone o repositório:
    ```sh
-   git clone https://github.com/seu-usuario/evoe-api.git
-   cd evoe-api
+   git clone https://github.com/seu-usuario/petrus-api.git
+   cd petrus-api
    ```
 
 1. Instale as dependências:
@@ -46,7 +46,7 @@ API REST desenvolvida com **NestJS** e **MySQL** para gerenciar usuários/apoiad
     DB_PORT=3307
     DB_USERNAME=root
     DB_PASSWORD=root
-    DB_NAME=evoe
+    DB_NAME=petrus
     ```
     
 3. Rodando o banco via Docker:

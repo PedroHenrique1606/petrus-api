@@ -18,13 +18,13 @@ export class MailService {
   }
 
   async sendWelcomeEmail(to: string, name: string) {
-    const subject = 'Bem-vindo ao universo Evoé!';
+    const subject = 'Bem-vindo ao universo Petrus!';
     const html = `
     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f9f9f9; padding: 40px;">
       <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
         <h2 style="color: #1A1A1A; font-size: 28px; margin-bottom: 16px;">Olá, ${name} 👋</h2>
         <p style="color: #444; font-size: 18px; line-height: 1.6;">
-          Seja muito bem-vindo ao <strong style="color: #0066cc;">universo Evoé</strong>! 🎉
+          Seja muito bem-vindo ao <strong style="color: #0066cc;">universo Petrus</strong>! 🎉
         </p>
         <p style="color: #555; font-size: 16px; line-height: 1.6; margin-top: 20px;">
           Aqui, você terá acesso a iniciativas que integram <strong>cultura</strong>, <strong>sustentabilidade</strong>, 
@@ -36,14 +36,14 @@ export class MailService {
         
         <div style="margin: 40px 0; text-align: center;">
           <a href="http://localhost:5173/login" target="_blank" style="background-color: #0066cc; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
-            Acessar a plataforma Evoé
+            Acessar a plataforma Petrus
           </a>
         </div>
 
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
 
         <p style="font-size: 12px; color: #999; text-align: center;">
-          Este é um e-mail automático enviado pelo sistema Evoé. Por favor, não responda.
+          Este é um e-mail automático enviado pelo sistema Petrus. Por favor, não responda.
         </p>
       </div>
     </div>
@@ -52,7 +52,7 @@ export class MailService {
 
     try {
       await this.transporter.sendMail({
-        from: `"Equipe Evoé" <${this.config.get('EMAIL_USER')}>`,
+        from: `"Equipe Petrus" <${this.config.get('EMAIL_USER')}>`,
         to,
         subject,
         html,
@@ -86,7 +86,7 @@ export class MailService {
 
     try {
       await this.transporter.sendMail({
-        from: `"Equipe Evoé" <${this.config.get('EMAIL_USER')}>`,
+        from: `"Equipe Petrus" <${this.config.get('EMAIL_USER')}>`,
         to,
         subject,
         html,
