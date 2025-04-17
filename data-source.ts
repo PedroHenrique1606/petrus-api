@@ -2,15 +2,13 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { User } from 'src/users/user.entity';
+
 dotenv.config();
 
 export const AppDataSource = new DataSource({
-    type: 'mysql',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || "3307"),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    type: 'postgres',
+    url: process.env.DB_HOST || 'postgresql://petrus_owner:npg_RtFcrnfu43PD@ep-patient-sound-a5392m2g-pooler.us-east-2.aws.neon.tech/petrus?sslmode=require',
     entities: [User],
     migrations: ['src/migrations/*.ts'],
+    // Remova o `ssl` separado aqui!
 });

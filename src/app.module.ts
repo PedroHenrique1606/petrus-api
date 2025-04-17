@@ -14,15 +14,18 @@ import { User } from './users/user.entity';
 
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
-        type: 'mysql',
+        type: 'postgres', 
         host: process.env.DB_HOST,
-        port: parseInt(process.env.DB_PORT || "3000"),
+        port: parseInt(process.env.DB_PORT || "5432"),
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         entities: [User],
-        synchronize: false, // migrations manuais
+        synchronize: false,
         autoLoadEntities: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
 
@@ -31,4 +34,4 @@ import { User } from './users/user.entity';
     MailModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
