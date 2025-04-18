@@ -1,7 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreatePasswordResetTable1743789754184 implements MigrationInterface {
-
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
@@ -9,9 +8,10 @@ export class CreatePasswordResetTable1743789754184 implements MigrationInterface
                 columns: [
                     {
                         name: 'id',
-                        type: 'varchar',
+                        type: 'uuid',
                         isPrimary: true,
                         isUnique: true,
+                        default: 'uuid_generate_v4()',
                     },
                     {
                         name: 'email',
@@ -32,11 +32,11 @@ export class CreatePasswordResetTable1743789754184 implements MigrationInterface
                         default: 'CURRENT_TIMESTAMP',
                     },
                 ],
-            })
-        )
+            }),
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable('passwords_resets');
     }
-
 }

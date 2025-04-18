@@ -34,7 +34,7 @@ export class MailService {
           </p>
           
           <div style="margin: 40px 0; text-align: center;">
-            <a href="http://localhost:5173/login" target="_blank" style="background-color: #0066cc; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
+            <a href="https://petrus-web.vercel.app/login" target="_blank" style="background-color: #0066cc; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 16px;">
               Acessar a plataforma Petrus
             </a>
           </div>
